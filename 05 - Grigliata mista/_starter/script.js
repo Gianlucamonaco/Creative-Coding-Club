@@ -1,71 +1,56 @@
-// Lascia che la pagina finisca di caricare tutti gli elementi
-window.onload = function () {
+let canvas, ctx;
+let frame = 0;
+const FRAME_INTERVAL = 2;
 
-// 1. Canvas
-// --------------------------------
+// ----------------------------------------------------------------
+// Questa funzione viene eseguita al caricamento del file HTML,
+// Ovvero quando gli elementi del DOM sono presenti nella pagina.
+window.onload = () => {
 
-  // Prendi l'elemento HTML con l'id "canvas"
-  const canvas = document.querySelector('#canvas');
+  initCanvas();
+  resizeCanvas();
+  animateCanvas();
 
-  // Assegna le dimensioni della canvas (altrimenti il disegno viene deformato)
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  // Prendi il contesto di disegno 2d della canvas
-  const ctx = canvas.getContext('2d');
-
-
-  // TASK #1
-  // --------------------------------
-
-    // Assegna un colore di riempimento
-
-    // Disegna un rettangolo con le dimensioni date
-
-  // TASK #2
-  // --------------------------------
-
-    // Crea delle variabili che contengano le dimensioni del rettangolo
-
-    // Assegna un colore di riempimento
-
-    // Disegna un rettangolo con le dimensioni date
-
-  // TASK #3
-  // --------------------------------
-
-    // Crea un loop che ti permetta di ripetere la stessa azione per N volte
-
-      // Crea delle variabili che contengano le dimensioni del rettangolo
-
-      // Assegna un colore di riempimento
-
-      // Disegna un rettangolo con le dimensioni date
-
-
-// 2. DOM
-// --------------------------------
-
-  // TASK #1
-  // --------------------------------
-
-      // Crea un elemento 'div'
-
-      // Assegna una classe all'elemento
-
-      // Crea una stringa con lo stile ed assegnala all'elemento
-
-      // Aggiungi del contenuto testuale all'elemento
-
-      // Aggiungi l'elemento come "figlio" di body
-
+  window.addEventListener('resize', resizeCanvas, false);
 }
 
+// ----------------------------------------------------------------
+// Questa funzione inizializza le seguenti variabili:
+// canvas > l'elemento HTML di tipo canvas
+// ctx    > il contesto di disegno 2d della canvas
+const initCanvas = () => {
+  canvas = document.querySelector('#canvas');
+  ctx    = canvas.getContext('2d');
+}
 
-// function randomRGB () {
-//   const r = Math.floor(Math.random() * 256);
-//   const g = Math.floor(Math.random() * 256);
-//   const b = Math.floor(Math.random() * 256);
+// ----------------------------------------------------------------
+// Questa funzione ridimensiona la canvas in base alla pixel-ratio,
+// necessario affinché appaia con la risoluzione corretta su schermi retina.
+const resizeCanvas = () => {
+  const ratio = window.devicePixelRatio;
 
-//   return `rgb(${r}, ${g}, ${b})`;
-// }
+  canvas.width  = window.innerWidth * ratio;
+  canvas.height = window.innerHeight * ratio;
+
+  ctx.scale(ratio, ratio);
+}
+
+// ----------------------------------------------------------------
+// Questa funzione ripulisce l'intera area della canvas.
+// Viene utilizzata prima di ogni ciclo di disegno.
+const resetCanvas = () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+// ----------------------------------------------------------------
+// Questa è una funzione ricorsiva, richiama se stessa ad ogni frame
+// per poter ridisegnare la canvas ed animarla.
+const animateCanvas = () => {
+  if (frame % FRAME_INTERVAL === 0) {
+    resetCanvas();
+    draw();
+  }
+
+  requestAnimationFrame(animateCanvas);
+  frame++;
+}

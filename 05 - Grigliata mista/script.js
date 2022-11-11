@@ -6,12 +6,15 @@ const FRAME_INTERVAL = 2;
 // Questa funzione viene eseguita al caricamento del file HTML,
 // Ovvero quando gli elementi del DOM sono presenti nella pagina.
 window.onload = () => {
+  this.gui       = new GuiView();
+  this.isPlaying = true;
 
   initCanvas();
   resizeCanvas();
   animateCanvas();
 
   window.addEventListener('resize', resizeCanvas, false);
+  window.addEventListener('keypress', handleKey, false);
 }
 
 // ----------------------------------------------------------------
@@ -46,11 +49,20 @@ const resetCanvas = () => {
 // Questa è una funzione ricorsiva, richiama se stessa ad ogni frame
 // per poter ridisegnare la canvas ed animarla.
 const animateCanvas = () => {
-  if (frame % FRAME_INTERVAL === 0) {
+  if (this.isPlaying && frame % FRAME_INTERVAL === 0) {
     resetCanvas();
     draw();
   }
-
+  
   requestAnimationFrame(animateCanvas);
-  frame++;
+  if (this.isPlaying) frame++;
+}
+
+const handleKey = (e) => {
+  switch (e.code) {
+    // Pause animation
+    case 'Space':
+      this.isPlaying = !this.isPlaying;
+      break;
+  }
 }

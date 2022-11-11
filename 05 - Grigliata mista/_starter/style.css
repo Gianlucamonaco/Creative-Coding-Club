@@ -1,0 +1,25 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+canvas {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+}
+
+.block {
+  position: absolute;
+  font-size: 25px;
+  font-family: sans-serif;
+  color: white;
+  background: blue;
+  padding: 10px 25px;
+  border-radius: 25px;
+}
+
+.block:hover {
+  background: yellow;
+}
